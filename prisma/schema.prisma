@@ -14,8 +14,22 @@ model Article {
     createdAt      DateTime        @default(now())
     image          String
     articleContent ArticleContent?
-    parent Folder @relation(fields: [parentId], references: [id])
-    parentId Int
+    parent         Folder          @relation(fields: [parentId], references: [id])
+    parentId       Int
+}
+
+model Photo {
+    id     Int    @id @default(autoincrement())
+    author String
+    image  String
+    category PhotoCategory @relation(fields: [categoryID], references: [id])
+    categoryID Int
+}
+
+model PhotoCategory {
+    id     Int    @id @default(autoincrement())
+    title String
+    photos Photo[]
 }
 
 model ArticleContent {
@@ -26,10 +40,10 @@ model ArticleContent {
 }
 
 model Folder {
-    id        Int     @id @default(autoincrement())
-    name String
-    parent Folder @relation(fields: [parentId], references: [id])
+    id       Int       @id @default(autoincrement())
+    name     String
+    parent   Folder?   @relation("FolderToFolder", fields: [parentId], references: [id])
     parentId Int
     articles Article[]
-    folders Folder[]
+    folders  Folder[]  @relation("FolderToFolder")
 }
