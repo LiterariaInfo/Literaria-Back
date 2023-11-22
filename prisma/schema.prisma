@@ -1,0 +1,35 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Article {
+    id             Int             @id @default(autoincrement())
+    name           String
+    author         String
+    createdAt      DateTime        @default(now())
+    image          String
+    articleContent ArticleContent?
+    parent Folder @relation(fields: [parentId], references: [id])
+    parentId Int
+}
+
+model ArticleContent {
+    id        Int     @id @default(autoincrement())
+    content   String  @db.Text
+    article   Article @relation(fields: [articleID], references: [id])
+    articleID Int     @unique
+}
+
+model Folder {
+    id        Int     @id @default(autoincrement())
+    name String
+    parent Folder @relation(fields: [parentId], references: [id])
+    parentId Int
+    articles Article[]
+    folders Folder[]
+}
