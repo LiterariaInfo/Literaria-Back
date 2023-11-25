@@ -6,6 +6,13 @@ const getArticle = (req: Request, res: Response) => {
 	const response = prisma.article.findUnique({
 		where: {
 			id: +req.params.articleId
+		},
+		include: {
+			articleContent: {
+				select: {
+					content: true
+				}
+			}
 		}
 	});
 
@@ -13,7 +20,7 @@ const getArticle = (req: Request, res: Response) => {
 };
 
 const createArticle = (req: Request, res: Response) => {
-	const { author, name, content, image, parentId } = req.body;
+	const { author, name, content, parentId } = req.body;
 
 	const response = prisma.article.create({
 		data: {
@@ -24,8 +31,41 @@ const createArticle = (req: Request, res: Response) => {
 					content
 				}
 			},
+			image: req.file!.path,
+			parentId: +parentId
+		}
+	});
+
+	handleResponse(response, res);
+};
+
+const updateArticle = (req: Request, res: Response) => {
+	const { author, name, content, image, parentId } = req.body;
+
+	const response = prisma.article.update({
+		where: {
+			id: +req.params.articleId
+		},
+		data: {
+			author,
+			name,
+			articleContent: {
+				create: {
+					content
+				}
+			},
 			image,
-			parentId: parentId
+			parentId: +parentId
+		}
+	});
+
+	handleResponse(response, res);
+};
+
+const deleteArticle = (req: Request, res: Response) => {
+	const response = prisma.article.delete({
+		where: {
+			id: +req.params.articleId
 		}
 	});
 
@@ -34,5 +74,7 @@ const createArticle = (req: Request, res: Response) => {
 
 export default {
 	getArticle,
-	createArticle
+	createArticle,
+	updateArticle,
+	deleteArticle
 };

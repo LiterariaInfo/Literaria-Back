@@ -7,6 +7,12 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model Admin {
+    id       Int    @id @default(autoincrement())
+    user     String @unique
+    password String
+}
+
 model Article {
     id             Int             @id @default(autoincrement())
     name           String
@@ -14,36 +20,38 @@ model Article {
     createdAt      DateTime        @default(now())
     image          String
     articleContent ArticleContent?
-    parent         Folder          @relation(fields: [parentId], references: [id])
+    parent         Directory       @relation(fields: [parentId], references: [id], onDelete: Cascade)
     parentId       Int
 }
 
-model Photo {
-    id     Int    @id @default(autoincrement())
-    author String
-    image  String
-    category PhotoCategory @relation(fields: [categoryID], references: [id])
+model Image {
+    id         Int           @id @default(autoincrement())
+    author     String
+    image      String
+    category   ImageCategory @relation(fields: [categoryID], references: [id], onDelete: Cascade)
     categoryID Int
 }
 
-model PhotoCategory {
-    id     Int    @id @default(autoincrement())
-    title String
-    photos Photo[]
+model ImageCategory {
+    id     Int     @id @default(autoincrement())
+    name   String
+    photos Image[]
 }
 
 model ArticleContent {
     id        Int     @id @default(autoincrement())
     content   String  @db.Text
-    article   Article @relation(fields: [articleID], references: [id])
+    article   Article @relation(fields: [articleID], references: [id], onDelete: Cascade)
     articleID Int     @unique
 }
 
-model Folder {
-    id       Int       @id @default(autoincrement())
-    name     String
-    parent   Folder?   @relation("FolderToFolder", fields: [parentId], references: [id])
-    parentId Int
-    articles Article[]
-    folders  Folder[]  @relation("FolderToFolder")
+model Directory {
+    id          Int         @id @default(autoincrement())
+    name        String
+    description String      @db.Text
+    image       String
+    parent      Directory?  @relation("DirectoryToDirectory", fields: [parentId], references: [id], onDelete: Cascade)
+    parentId    Int?
+    articles    Article[]
+    directories Directory[] @relation("DirectoryToDirectory")
 }
