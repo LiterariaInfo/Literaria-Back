@@ -31,8 +31,7 @@ const createArticle = (req: Request, res: Response) => {
 					content
 				}
 			},
-			image: req.file!.path,
-			parentId: +parentId
+			image: req.file!.path
 		}
 	});
 
@@ -54,8 +53,7 @@ const updateArticle = (req: Request, res: Response) => {
 					content
 				}
 			},
-			image,
-			parentId: +parentId
+			image
 		}
 	});
 

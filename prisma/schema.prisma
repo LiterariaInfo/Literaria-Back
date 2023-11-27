@@ -1,57 +1,64 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Admin {
-    id       Int    @id @default(autoincrement())
-    user     String @unique
-    password String
-}
-
-model Article {
-    id             Int             @id @default(autoincrement())
-    name           String
-    author         String
-    createdAt      DateTime        @default(now())
-    image          String
-    articleContent ArticleContent?
-    parent         Directory       @relation(fields: [parentId], references: [id], onDelete: Cascade)
-    parentId       Int
-}
-
-model Image {
-    id         Int           @id @default(autoincrement())
-    author     String
-    image      String
-    category   ImageCategory @relation(fields: [categoryID], references: [id], onDelete: Cascade)
-    categoryID Int
-}
-
-model ImageCategory {
-    id     Int     @id @default(autoincrement())
-    name   String
-    photos Image[]
-}
-
-model ArticleContent {
-    id        Int     @id @default(autoincrement())
-    content   String  @db.Text
-    article   Article @relation(fields: [articleID], references: [id], onDelete: Cascade)
-    articleID Int     @unique
+  id       Int    @id @default(autoincrement())
+  user     String @unique
+  password String
 }
 
 model Directory {
-    id          Int         @id @default(autoincrement())
-    name        String
-    description String      @db.Text
-    image       String
-    parent      Directory?  @relation("DirectoryToDirectory", fields: [parentId], references: [id], onDelete: Cascade)
-    parentId    Int?
-    articles    Article[]
-    directories Directory[] @relation("DirectoryToDirectory")
+  id                Int                 @id @default(autoincrement())
+  name              String
+  description       String              @db.Text
+  image             String
+  parent            Directory?          @relation("DirectoryToDirectory", fields: [parentID], references: [id], onDelete: Cascade)
+  parentID          Int?
+  directories       Directory[]         @relation("DirectoryToDirectory")
+  AtrticleDirectory AtrticleDirectory[]
+}
+
+model Article {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  author            String
+  createdAt         DateTime            @default(now())
+  image             String
+  articleContent    ArticleContent?
+  AtrticleDirectory AtrticleDirectory[]
+}
+
+model AtrticleDirectory {
+  id          Int       @id @default(autoincrement())
+  article     Article   @relation(fields: [articleID], references: [id])
+  articleID   Int
+  directory   Directory @relation(fields: [directoryID], references: [id])
+  directoryID Int
+}
+
+model ArticleContent {
+  id        Int     @id @default(autoincrement())
+  content   String  @db.Text
+  article   Article @relation(fields: [articleID], references: [id], onDelete: Cascade)
+  articleID Int     @unique
+}
+
+model Image {
+  id         Int           @id @default(autoincrement())
+  author     String
+  image      String
+  category   ImageCategory @relation(fields: [categoryID], references: [id], onDelete: Cascade)
+  categoryID Int
+}
+
+model ImageCategory {
+  id     Int     @id @default(autoincrement())
+  name   String
+  photos Image[]
 }
