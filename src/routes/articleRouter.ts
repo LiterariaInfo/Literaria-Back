@@ -1,7 +1,5 @@
 import express from 'express';
 import articleController from '../controllers/articleController';
-import { body } from 'express-validator';
-import { validate } from '../middleware/validatorMiddleware';
 import upload from '../../multer/upload';
 import { authenticateToken } from '../middleware/authMiddleware';
 
@@ -18,26 +16,26 @@ router.get('/:articleId', articleController.getArticle);
 // ];
 
 router.post(
-	'/',
-	authenticateToken,
+  '/',
+  authenticateToken,
 //	articleContentValidator,
 //	validate,
-	upload.single('image'),
-	articleController.createArticle
+  upload.single('image'),
+  articleController.createArticle
 );
 
 router.put(
-	'/:articleId',
-	authenticateToken,
+  '/:articleId',
+  authenticateToken,
 //	articleContentValidator,
 //	validate,
-	articleController.updateArticle
+  articleController.updateArticle
 );
 
 router.delete(
-	'/:articleId',
-	authenticateToken,
-	articleController.deleteArticle
+  '/:articleId',
+  authenticateToken,
+  articleController.deleteArticle
 );
 
 export default router;
