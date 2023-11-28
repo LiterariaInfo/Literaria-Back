@@ -7,35 +7,35 @@ const router = express.Router();
 
 router.get('/:articleId', articleController.getArticle);
 
-// const articleContentValidator = [
-// 	body('author').exists().isString().isLength({ min: 1, max: 255 }),
-// 	body('name').exists().isString().isLength({ min: 1, max: 255 }),
-// 	body('content').exists().isString(),
-// 	body('image').exists().isString(),
-// 	body('parentId').exists().isInt()
-// ];
+router.get('/recent', articleController.getRecent);
+
+router.get('/recommended');
 
 router.post(
-  '/',
-  authenticateToken,
-//	articleContentValidator,
-//	validate,
-  upload.single('image'),
-  articleController.createArticle
+	'/',
+	authenticateToken,
+	upload.single('image'),
+	articleController.createArticle
 );
 
-router.put(
-  '/:articleId',
-  authenticateToken,
-//	articleContentValidator,
-//	validate,
-  articleController.updateArticle
+router.post(
+	'/add/:articleID/:directoryID',
+	authenticateToken,
+	articleController.addArticleToDirectory
+);
+
+router.put('/:articleId', authenticateToken, articleController.updateArticle);
+
+router.delete(
+	'/:articleId',
+	authenticateToken,
+	articleController.deleteArticle
 );
 
 router.delete(
-  '/:articleId',
-  authenticateToken,
-  articleController.deleteArticle
+	'/remove/:removeArticleFromDirectory',
+	authenticateToken,
+	articleController.removeArticleFromDirectory
 );
 
 export default router;

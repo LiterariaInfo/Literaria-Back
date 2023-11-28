@@ -19,8 +19,19 @@ const getArticle = (req: Request, res: Response) => {
 	handleResponse(response, res);
 };
 
+const getRecent = (req: Request, res: Response) => {
+	const response = prisma.article.findMany({
+		take: 10,
+		orderBy: {
+			createdAt: 'desc'
+		}
+	});
+
+	handleResponse(response, res);
+}
+
 const createArticle = (req: Request, res: Response) => {
-	const { author, name, content, parentId } = req.body;
+	const { author, name, content } = req.body;
 
 	const response = prisma.article.create({
 		data: {
@@ -38,8 +49,29 @@ const createArticle = (req: Request, res: Response) => {
 	handleResponse(response, res);
 };
 
+const addArticleToDirectory = (req: Request, res: Response) => {
+	const response = prisma.articleDirectory.create({
+		data: {
+			articleID: +req.params.articleID,
+			directoryID: +req.params.directoryID
+		}
+	});
+
+	handleResponse(response, res);
+};
+
+const removeArticleFromDirectory = (req: Request, res: Response) => {
+	const response = prisma.articleDirectory.delete({
+		where: {
+			id: +req.params.articleDirectoryID
+		}
+	});
+
+	handleResponse(response, res);
+};
+
 const updateArticle = (req: Request, res: Response) => {
-	const { author, name, content, image, parentId } = req.body;
+	const { author, name, content, image } = req.body;
 
 	const response = prisma.article.update({
 		where: {
@@ -49,7 +81,7 @@ const updateArticle = (req: Request, res: Response) => {
 			author,
 			name,
 			articleContent: {
-				create: {
+				update: {
 					content
 				}
 			},
@@ -72,7 +104,10 @@ const deleteArticle = (req: Request, res: Response) => {
 
 export default {
 	getArticle,
+	getRecent,
 	createArticle,
+	addArticleToDirectory,
 	updateArticle,
-	deleteArticle
+	deleteArticle,
+	removeArticleFromDirectory
 };

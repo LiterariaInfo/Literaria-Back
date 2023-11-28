@@ -14,32 +14,41 @@ model Admin {
 }
 
 model Directory {
-  id                Int                 @id @default(autoincrement())
-  name              String
-  description       String              @db.Text
-  image             String
-  parent            Directory?          @relation("DirectoryToDirectory", fields: [parentID], references: [id], onDelete: Cascade)
-  parentID          Int?
-  directories       Directory[]         @relation("DirectoryToDirectory")
-  AtrticleDirectory AtrticleDirectory[]
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String             @db.Text
+  image            String
+  parent           Directory?         @relation("DirectoryToDirectory", fields: [parentID], references: [id], onDelete: Cascade)
+  parentID         Int?
+  directories      Directory[]        @relation("DirectoryToDirectory")
+  articleDirectory ArticleDirectory[]
 }
 
 model Article {
-  id                Int                 @id @default(autoincrement())
-  name              String
-  author            String
-  createdAt         DateTime            @default(now())
-  image             String
-  articleContent    ArticleContent?
-  AtrticleDirectory AtrticleDirectory[]
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  author             String
+  createdAt          DateTime             @default(now())
+  image              String
+  articleContent     ArticleContent?
+  articleDirectory   ArticleDirectory[]
+  RecommendedArticle RecommendedArticle[]
 }
 
-model AtrticleDirectory {
+model RecommendedArticle {
+  id        Int     @id @default(autoincrement())
+  article   Article @relation(fields: [articleID], references: [id], onDelete: Cascade)
+  articleID Int
+}
+
+model ArticleDirectory {
   id          Int       @id @default(autoincrement())
   article     Article   @relation(fields: [articleID], references: [id])
   articleID   Int
   directory   Directory @relation(fields: [directoryID], references: [id])
   directoryID Int
+
+  @@unique([articleID, directoryID])
 }
 
 model ArticleContent {

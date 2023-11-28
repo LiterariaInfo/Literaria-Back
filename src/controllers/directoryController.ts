@@ -8,8 +8,12 @@ const getDirectory = (req: Request, res: Response) => {
 			id: +req.params.directoryId
 		},
 		include: {
-			articles: true,
-			directories: true
+			directories: true,
+			articleDirectory: {
+				select: {
+					article: true,
+				}
+			}
 		}
 	});
 
@@ -22,9 +26,9 @@ const createDirectory = (req: Request, res: Response) => {
 	const response = prisma.directory.create({
 		data: {
 			name,
-            description,
-            parentId: +parentId,
-            image: req.file!.path
+			description,
+			parentID: +parentId,
+			image: req.file!.path
 		}
 	});
 
@@ -32,7 +36,7 @@ const createDirectory = (req: Request, res: Response) => {
 };
 
 const updateDirectory = (req: Request, res: Response) => {
-	const { name, parentId, description } = req.body;
+	const { name, parentID, description } = req.body;
 
 	const response = prisma.directory.update({
 		where: {
@@ -40,8 +44,8 @@ const updateDirectory = (req: Request, res: Response) => {
 		},
 		data: {
 			name,
-			parentId,
-            description
+			description,
+			parentID: parentID
 		}
 	});
 
@@ -52,7 +56,7 @@ const deleteDirectory = (req: Request, res: Response) => {
 	const response = prisma.directory.delete({
 		where: {
 			id: +req.params.directoryId
-		},
+		}
 
 	});
 
