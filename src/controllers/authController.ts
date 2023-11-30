@@ -28,12 +28,10 @@ const login = (req: Request, res: Response) => {
 					res.json({ token: jwt.sign({ id: user.id }, process.env.KEY!) });
 				})
 				.catch((e) => {
-					console.log(5555)
 					res.status(500).json(e);
 				});
 		})
 		.catch((e) => {
-			console.log(444)
 			res.status(500).json(e);
 		});
 };

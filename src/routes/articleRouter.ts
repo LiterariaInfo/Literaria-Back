@@ -5,11 +5,11 @@ import { authenticateToken } from '../middleware/authMiddleware';
 
 const router = express.Router();
 
+router.get('/latest', articleController.getRecent);
+
+router.get('/recommended', articleController.getRecommended);
+
 router.get('/:articleId', articleController.getArticle);
-
-router.get('/recent', articleController.getRecent);
-
-router.get('/recommended');
 
 router.post(
 	'/',
@@ -24,6 +24,8 @@ router.post(
 	articleController.addArticleToDirectory
 );
 
+router.post('/add-recommended/:articleID', authenticateToken, articleController.addRecommendedArticle);
+
 router.put('/:articleId', authenticateToken, articleController.updateArticle);
 
 router.delete(
@@ -36,6 +38,12 @@ router.delete(
 	'/remove/:removeArticleFromDirectory',
 	authenticateToken,
 	articleController.removeArticleFromDirectory
+);
+
+router.delete(
+	'/remove-recommended/:recommendedArticleID',
+	authenticateToken,
+	articleController.removeRecommendedArticle
 );
 
 export default router;

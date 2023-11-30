@@ -19,7 +19,7 @@ const createImage = (req: Request, res: Response) => {
 		data: {
 			author,
 			categoryID: +req.params.categoryId,
-			image: req.file!.path
+			image: req.file!.filename
 		}
 	});
 

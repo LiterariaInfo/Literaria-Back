@@ -28,7 +28,7 @@ const createDirectory = (req: Request, res: Response) => {
 			name,
 			description,
 			parentID: +parentId,
-			image: req.file!.path
+			image: req.file!.filename
 		}
 	});
 

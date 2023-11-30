@@ -28,10 +28,22 @@ const getRecent = (req: Request, res: Response) => {
 	});
 
 	handleResponse(response, res);
-}
+};
+
+const getRecommended = (req: Request, res: Response) => {
+	const response = prisma.recommendedArticle.findMany({
+		include: {
+			article: true
+		}
+	});
+
+	handleResponse(response, res);
+};
 
 const createArticle = (req: Request, res: Response) => {
 	const { author, name, content } = req.body;
+
+	console.log(req.file!.filename)
 
 	const response = prisma.article.create({
 		data: {
@@ -42,7 +54,7 @@ const createArticle = (req: Request, res: Response) => {
 					content
 				}
 			},
-			image: req.file!.path
+			image: req.file!.filename
 		}
 	});
 
@@ -54,6 +66,16 @@ const addArticleToDirectory = (req: Request, res: Response) => {
 		data: {
 			articleID: +req.params.articleID,
 			directoryID: +req.params.directoryID
+		}
+	});
+
+	handleResponse(response, res);
+};
+
+const addRecommendedArticle = (req: Request, res: Response) => {
+	const response = prisma.recommendedArticle.create({
+		data: {
+			articleID: +req.params.articleID
 		}
 	});
 
@@ -102,12 +124,25 @@ const deleteArticle = (req: Request, res: Response) => {
 	handleResponse(response, res);
 };
 
+const removeRecommendedArticle = (req: Request, res: Response) => {
+	const response = prisma.recommendedArticle.delete({
+		where: {
+			id: +req.params.recommendedArticleID
+		}
+	});
+
+	handleResponse(response, res);
+};
+
 export default {
 	getArticle,
 	getRecent,
+	getRecommended,
 	createArticle,
 	addArticleToDirectory,
+	addRecommendedArticle,
 	updateArticle,
 	deleteArticle,
-	removeArticleFromDirectory
+	removeArticleFromDirectory,
+	removeRecommendedArticle
 };
