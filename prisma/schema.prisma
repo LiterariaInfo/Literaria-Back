@@ -47,8 +47,6 @@ model ArticleDirectory {
   articleID   Int
   directory   Directory @relation(fields: [directoryID], references: [id])
   directoryID Int
-
-  @@unique([articleID, directoryID])
 }
 
 model ArticleContent {
