@@ -21,13 +21,13 @@ const getDirectory = (req: Request, res: Response) => {
 };
 
 const createDirectory = (req: Request, res: Response) => {
-	const { name, parentId, description } = req.body;
+	const { name, parentID, description } = req.body;
 
 	const response = prisma.directory.create({
 		data: {
 			name,
 			description,
-			parentID: +parentId,
+			parentID: +parentID,
 			image: req.file!.filename
 		}
 	});
