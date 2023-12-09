@@ -5,14 +5,13 @@ import directoryRouter from './routes/directoryRouter';
 import imageRouter from './routes/imageRouter';
 import imageCategoryRouter from './routes/imageCategoryRouter';
 import authRouter from './routes/authRouter';
-import { register } from './init';
 import path from 'path';
 
 const PORT = 6969;
 
 const app = express();
 
-register('admin', 'literaria-admin');
+// register('admin', 'literaria-admin');
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
