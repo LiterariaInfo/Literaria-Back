@@ -19,31 +19,25 @@ router.post(
 );
 
 router.post(
-	'/add/:articleID/:directoryID',
+	'/directory/:articleID/:directoryID',
 	authenticateToken,
 	articleController.addArticleToDirectory
 );
 
-router.post('/add-recommended/:articleID', authenticateToken, articleController.addRecommendedArticle);
+router.put('/recommended', authenticateToken, articleController.addRecommendedArticle);
 
-router.put('/:articleId', authenticateToken, articleController.updateArticle);
+router.put('/:articleID', authenticateToken, articleController.updateArticle);
 
 router.delete(
-	'/:articleId',
+	'/:articleID',
 	authenticateToken,
 	articleController.deleteArticle
 );
 
 router.delete(
-	'/remove/:removeArticleFromDirectory',
+	'/directory/:articleDirectoryID',
 	authenticateToken,
 	articleController.removeArticleFromDirectory
-);
-
-router.delete(
-	'/remove-recommended/:recommendedArticleID',
-	authenticateToken,
-	articleController.removeRecommendedArticle
 );
 
 export default router;

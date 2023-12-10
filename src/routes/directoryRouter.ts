@@ -1,6 +1,4 @@
 import express from 'express';
-import { body } from 'express-validator';
-import { validate } from '../middleware/validatorMiddleware';
 import directoryController from '../controllers/directoryController';
 import upload from '../../multer/upload';
 import { authenticateToken } from '../middleware/authMiddleware';
@@ -9,24 +7,23 @@ const router = express.Router();
 
 router.get('/:directoryId', directoryController.getDirectory);
 
-
 router.post(
-	'/',
-	authenticateToken,
-	upload.single('image'),
-	directoryController.createDirectory
+  '/',
+  authenticateToken,
+  upload.single('image'),
+  directoryController.createDirectory
 );
 
 router.put(
-	'/:directoryId',
-	authenticateToken,
-	directoryController.updateDirectory
+  '/:directoryId',
+  authenticateToken,
+  directoryController.updateDirectory
 );
 
 router.delete(
-	'/:directoryId',
-	authenticateToken,
-	directoryController.deleteDirectory
+  '/:directoryId',
+  authenticateToken,
+  directoryController.deleteDirectory
 );
 
 export default router;
