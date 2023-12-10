@@ -43,8 +43,6 @@ const getRecommended = (req: Request, res: Response) => {
 const createArticle = (req: Request, res: Response) => {
 	const { author, name, content } = req.body;
 
-	console.log(req.file!.filename)
-
 	const response = prisma.article.create({
 		data: {
 			author,

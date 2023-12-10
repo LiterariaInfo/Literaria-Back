@@ -38,8 +38,6 @@ const createDirectory = (req: Request, res: Response) => {
 const updateDirectory = (req: Request, res: Response) => {
 	const { name, parentID, description } = req.body;
 
-	console.log(req.body)
-
 	const response = prisma.directory.update({
 		where: {
 			id: +req.params.directoryId
