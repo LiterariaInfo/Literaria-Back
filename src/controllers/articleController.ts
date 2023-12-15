@@ -40,6 +40,32 @@ const getRecommended = (req: Request, res: Response) => {
 	handleResponse(response, res);
 };
 
+const getCategories = (req: Request, res: Response) => {
+	const response = prisma.directory.findMany({
+		where: {
+			parentID: null
+		},
+		select: {
+			directories: {
+				select: {
+					directories: {
+						select: {
+							name: true,
+							id: true
+						}
+					},
+					name: true,
+					id: true
+				}
+			},
+			name: true,
+			id: true
+		}
+	});
+
+	handleResponse(response, res);
+}
+
 const createArticle = (req: Request, res: Response) => {
 	const { author, name, content } = req.body;
 
@@ -136,6 +162,7 @@ export default {
 	getArticle,
 	getRecent,
 	getRecommended,
+	getCategories,
 	createArticle,
 	addArticleToDirectory,
 	addRecommendedArticle,

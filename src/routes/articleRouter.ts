@@ -9,6 +9,8 @@ router.get('/latest', articleController.getRecent);
 
 router.get('/recommended', articleController.getRecommended);
 
+router.get('/categories', articleController.getCategories);
+
 router.get('/:articleId', articleController.getArticle);
 
 router.post(
